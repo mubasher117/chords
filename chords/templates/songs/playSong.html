@@ -1,0 +1,191 @@
+{% extends "songs/base.html" %}
+{% block content %}
+{% load static %}
+
+    <!-- ##### Breadcumb Area Start ##### -->
+    <section class="breadcumb-area bg-img bg-overlay" style="background-image: url({% static 'img/bg-img/breadcumb3.jpg' %});">
+        <div class="bradcumbContent">
+            <h2>{{name}}</h2>
+        </div>
+    </section>
+    <!-- ##### Breadcumb Area End ##### -->
+    {% if songs|length == 0 %}
+    <div class="text-center col-12" style="padding: 10%;">
+        <h4 >There are no songs here.</h4>
+        {% if type1 == 'playlist' %}
+        <h4><a href="{% url 'songs' %}">Head to songs section to add some songs.</a></h4>
+        {% endif %}
+    </div>
+    {% else %} 
+    <section class="album-catagory section-padding-100-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="single-song-area mb-30 d-flex flex-wrap align-items-end">
+                        <div class="song-thumbnail">
+                            <img src="{% static 'img/bg-img/s3.jpg' %}" alt="">
+                        </div>
+                        <div class="song-play-area">
+                            <div class="song-name">
+                                <p>{{currentSong.tittle}}</p>
+                            </div>
+                            <audio preload="auto" controls autoplay>
+                                <source type="audio/mp3" src="{{MEDIA_URL}}{{currentSong.songFile.url}}">
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="overlay" style="text-align: center;">
+                <img src="http://cdn.nirmaltv.com/images/generatorphp-thumb.gif" alt="Wait" alt="Loading" />
+                <div id="overlayText">Wait Loading</div>
+           </div>
+    <div id="songs-container" style="display: none;">       
+    <section class="latest-albums-area section-padding-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-heading style-2">
+                        <p>See what’s recommended</p>
+                        <h2>Recommended Songs</h2>
+                        <p>By Genere</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-9">
+                    <div class="ablums-text text-center mb-70">
+                        <p>These songs are recommended on your songs genres that you are frequently playing. </p>
+                    </div>
+                </div>
+            </div>
+            {% if message == False %}
+            <div class="text-center col-12">
+                <a href="{% url 'login' %}">
+                <h4>Login to see the recommendations and personalized playlists</h4>
+            </a>
+            </div>
+            {% else %} 
+            <div class="row">
+                <div class="col-12">
+                    <div class="albums-slideshow owl-carousel">
+                        <!-- Single Album -->
+                        {% for r in recommendations %}
+                        <div class="single-album">
+                            <img src="{{MEDIA_URL}}{{r.image.url}}" alt="">
+                            <div class="album-info">
+                                <a href="{% url 'playSong' 'song' r.tittle %}">
+                                    <h5>{{r.tittle}}</h5>
+                                </a>
+                                <p>{{r.album}}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    <section class="latest-albums-area section-padding-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-heading style-2">
+                        <p>See what’s recommended</p>
+                        <h2>Recommended Songs</h2>
+                        <p>By History</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-9">
+                    <div class="ablums-text text-center mb-70">
+                        <p>These songs are recommended on your previous listening history. </p>
+                    </div>
+                </div>
+            </div>
+            {% if message == False %}
+            <div class="text-center col-12">
+                <a href="{% url 'login' %}">
+                <h4>Login to see the recommendations and personalized playlists</h4>
+            </a>
+            </div>
+            {% else %} 
+            <div class="row">
+                <div class="col-12">
+                    <div class="albums-slideshow owl-carousel">
+                        <!-- Single Album -->
+                        {% for r in usersongshistory %}
+                        <div class="single-album">
+                            <img src="{{MEDIA_URL}}{{r.image.url}}" alt="">
+                            <div class="album-info">
+                                <a href="{% url 'playSong' 'song' r.tittle %}">
+                                    <h5>{{r.tittle}}</h5>
+                                </a>
+                                <p>{{r.album}}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    </div>
+    <section class="album-catagory section-padding-100-0">
+        <div class="container">
+            
+            <div  id = 'container' class="row oneMusic-albums">
+                <!-- Single Album -->
+                {% for song in songs  %}
+                <div class="col-16 col-sm-4 col-md-3 col-lg-2 single-album-item">
+                    <div class="single-album">
+                        <img src="{{MEDIA_URL}}{{song.image.url}}" alt="">
+                        <div class="album-info">
+                            <a href="{% url 'playSong' 'song' song.tittle %} ">
+                                <h5>{{song.tittle}}</h5>
+                            </a>
+                            <p>{{song.album}}</p>
+                            {% if type1 == 'playlist'%}
+                            <a href="{% url 'deleteSong' name song.tittle %} ">
+                                <span class="glyphicon glyphicon-remove" onclick="return confirm('Are you sure you want to delete this?')"></span>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <!-- ##### Album Catagory Area End ##### -->
+    <div>
+        <!-- Song Playing Currently -->
+
+
+</div>
+
+
+<script>
+var delay = 3000;
+setTimeout(function() 
+
+    {  
+
+        $( "#overlay" ).fadeOut( "slow" );
+
+         $('#container').fadeIn();
+         $('#songs-container').css("display", "block");
+    },
+    delay
+) ;
+</script>
+
+
+{% endblock %}

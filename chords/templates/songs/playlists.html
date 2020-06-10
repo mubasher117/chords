@@ -1,0 +1,76 @@
+{% extends "songs/base.html" %}
+{% block content %}
+{% load static %}
+
+    <!-- ##### Breadcumb Area Start ##### -->
+    <section class="breadcumb-area bg-img bg-overlay" style="background-image: url({% static 'img/bg-img/breadcumb3.jpg' %});">
+        <div class="bradcumbContent">
+            <p>Your Personalized Playlists</p>
+            <h2>Playlists</h2>
+        </div>
+    </section>
+    <!-- ##### Breadcumb Area End ##### -->
+
+    <!-- ##### Events Area Start ##### -->
+    <section class="events-area section-padding-100">
+        <div class="container">
+            <div class="row col-12 col-md-12 col-lg-12">
+                {% if playlists|length == 0 %}
+                <div class="text-center col-12">
+                    <h2>There are no playlists</h2>
+                </div>
+                {% else %} 
+                {% for playlist in playlists %}
+                <!-- Single Event Area -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="single-event-area mb-30">
+                        <div class="event-thumbnail">
+                            <img src="{% static 'img/bg-img/e8.jpg'%}" alt="">
+                        </div>
+                        <div class="event-text">
+                            <h4>{{playlist.name}}</h4>
+                                <div class="text-center col-12">
+                                    <a href="{% url 'playSong' 'playlist' playlist.name %}" class="btn see-more-btn">Play</a>
+                                </div>
+                                <div class="text-center col-12">
+                            <a href="{% url 'deletePlaylist' playlist.name %}" class="btn see-more-btn" onclick="return confirm('Are you sure you want to delete this?')">Delete</a>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+                <div class="text-center col-12 ">
+                    <a href="{% url 'createPlaylist' %}" class="btn btn-outline-dark btn-lg">Create Playlists</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Events Area End ##### -->
+
+
+    <!-- ##### Newsletter & Testimonials Area Start ##### -->
+    <section class="newsletter-testimonials-area">
+        <div class="container">
+            <div class="row">
+
+                <!-- Newsletter Area -->
+                <div class="col-12">
+                    <div class="newsletter-area mb-100">
+                        <div class="section-heading text-left mb-50">
+                            <p>You will get emails weekly</p>
+                            <h2>Subscribe to our Recommendation system</h2>
+                        </div>
+                        <div class="newsletter-form">
+                            <form action="#">
+                                <input type="search" name="search" id="newsletterSearch" placeholder="E-mail">
+                                <button type="submit" class="btn oneMusic-btn">Subscribe <i class="fa fa-angle-double-right"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Newsletter & Testimonials Area End ##### -->
+{% endblock %}

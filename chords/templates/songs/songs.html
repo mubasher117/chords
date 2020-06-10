@@ -1,0 +1,155 @@
+{% extends "songs/base.html" %}
+{% block content %}
+{% load static %}
+{% include "songs/addToPlaylist.html" %}
+{% load crispy_forms_tags %}
+
+    <!-- ##### Breadcumb Area Start ##### -->
+    <section class="breadcumb-area bg-img bg-overlay" style="background-image: url({% static 'img/bg-img/breadcumb3.jpg' %});">
+        <div class="bradcumbContent">
+            <p>Search New Songs</p>
+            <h2>Latest Songs</h2>
+        </div>
+    </section>
+    <!-- ##### Breadcumb Area End ##### -->
+
+    <!-- ##### Album Catagory Area Start ##### -->
+    <section class="album-catagory section-padding-100-0">
+        <div class="container">
+            <!-- <div class="row">
+                <div class="col-12">
+                    <div class="browse-by-catagories catagory-menu d-flex flex-wrap align-items-center mb-70">
+                        <a href="#" data-filter="*">Browse All</a>
+                        <a href="#" data-filter=".a" class="active">A</a>
+                        <a href="#" data-filter=".b">B</a>
+                        <a href="#" data-filter=".c">C</a>
+                        <a href="#" data-filter=".d">D</a>
+                        <a href="#" data-filter=".e">E</a>
+                        <a href="#" data-filter=".f">F</a>
+                        <a href="#" data-filter=".g">G</a>
+                        <a href="#" data-filter=".h">H</a>
+                        <a href="#" data-filter=".i">I</a>
+                        <a href="#" data-filter=".j">J</a>
+                        <a href="#" data-filter=".k">K</a>
+                        <a href="#" data-filter=".l">L</a>
+                        <a href="#" data-filter=".m">M</a>
+                        <a href="#" data-filter=".n">N</a>
+                        <a href="#" data-filter=".o">O</a>
+                        <a href="#" data-filter=".p">P</a>
+                        <a href="#" data-filter=".q">Q</a>
+                        <a href="#" data-filter=".r">R</a>
+                        <a href="#" data-filter=".s">S</a>
+                        <a href="#" data-filter=".t">T</a>
+                        <a href="#" data-filter=".u">U</a>
+                        <a href="#" data-filter=".v">V</a>
+                        <a href="#" data-filter=".w">W</a>
+                        <a href="#" data-filter=".x">X</a>
+                        <a href="#" data-filter=".y">Y</a>
+                        <a href="#" data-filter=".z">Z</a>
+                        <a href="#" data-filter=".number">0-9</a>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="row oneMusic-albums">
+                <!-- Single Album -->
+                {% for song in songs  %}
+                <div class="col-16 col-sm-4 col-md-3 col-lg-2 single-album-item">
+                    <div class="single-album">
+                        {% if song.image.url != None %}
+                        <img src="{{MEDIA_URL}}{{song.image.url}}" alt="">
+                        {% else %}
+                        <img src="{% static 'img/bg-img/e7.jpg' %}" alt="">
+                        {% endif %}
+                        <div class="album-info">
+                            <a href="{% url 'playSong' 'song' song.tittle %} ">
+                                <h5>{{song.tittle}}</h5>
+                            </a>
+                            <p>{{song.album}}</p>
+                            {% include "songs/addToPlaylist.html" %}
+                            <a data-toggle="modal" href="#modalFor{{song.id}}" style="color: dimgrey; font-size: small;">Add to Playlist</a>
+                        </div>
+                    </div>
+                </div>     
+
+        <!-- modal form starts -->
+                <div class="modal fade" id="modalFor{{song.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog form-dark" role="document">
+                    <!--Content-->
+                    <div class="modal-content card card-image" style="background-image: url({% static 'img/bg-img/e8.jpg' %});">
+                      <div class="text-white rgba-stylish-strong py-5 px-5 z-depth-4">
+                        <!--Header-->
+                        <div class="modal-header text-center pb-4">
+                          <h3 class="modal-title w-100 white-text font-weight-bold" id="myModalLabel" style="color: blanchedalmond;"><strong>Add to </strong> <a
+                              class="green-text font-weight-bold"><strong> Playlist</strong></a></h3>
+                          <button type="button" class="close white-text" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                
+                      <!--Body-->
+                      <div class="contact-form-area">
+                        <div class="row">
+                          <div class="modal-body">
+                            <div class="col-md-12 col-lg-12">
+                              <div class="form-group" style="width: 100%;">
+                                  <ul class="list-group list-group-flush" style="width: 100%;">
+                                    {% for playlist in playlists %}
+                                    <li class="list-group-item"><a href="{% url 'addToPlaylist' playlist.name song.tittle %}">{{playlist.name}}</a></li>
+                                    {% endfor %}
+                                </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                
+                      <!--Footer-->
+                    </div>
+                    <!--/.Content-->
+                  </div>
+                </div>
+                </div>
+                <!--Modal: modalPush-->
+                
+
+
+
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- ##### Album Catagory Area End ##### -->
+
+    <!-- ##### Song Area Start ##### -->
+    <div class="one-music-songs-area mb-70">
+        <div class="container">
+            <div class="row">
+
+                <!-- Single Song Area -->
+                {% for song in random_songs %}
+                <div class="col-12">
+                    <div class="single-song-area mb-30 d-flex flex-wrap align-items-end">
+                        <div class="song-thumbnail">
+                            <img src="{% static 'img/bg-img/a6.jpg' %}" alt="">
+                        </div>
+                        <div class="song-play-area">
+                            <div class="song-name">
+                                <p>01. {{song.tittle}}</p>
+                            </div>
+                            <audio preload="auto" controls>
+                                <source src="{{MEDIA_URL}}{{song.songFile.url}}">
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- ##### Song Area End ##### -->
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "songs/base.html" %}
+{% block content %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+    <!-- ##### Breadcumb Area Start ##### -->
+    <section class="breadcumb-area bg-img bg-overlay" style="background-image: url({% static 'img/bg-img/breadcumb2.jpg' %});">
+        <div class="bradcumbContent">
+            <h2>Login</h2>
+        </div>
+    </section>
+    <!-- ##### Breadcumb Area End ##### -->
+    {%load crispy_forms_tags%}
+    <!-- ##### Login Area Start ##### -->
+    <section class="login-area section-padding-100">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-8">
+                    <div class="login-content">
+                        <h3>Welcome Back</h3>
+                        <!-- Login Form -->
+                        <div class="login-form">
+                            <form method="POST" action="login">
+                                {% csrf_token %}
+                                {{form|crispy}}
+                                <div style = "direction:ltr;">
+                                <button type="submit" class="btn oneMusic-btn mt-30" >Sign In</button>
+                                    <div>
+                                        <a href = "{% url 'signup' %}">Sign Up</a>
+                                    </div>
+                                </div>
+                            </form>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Login Area End ##### -->
+    {% endblock %}

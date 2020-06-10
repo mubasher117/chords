@@ -1,0 +1,3 @@
+django-crispy-forms
+whitenoise
+django-widget-tweaks
