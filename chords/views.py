@@ -67,7 +67,7 @@ def uploadSong(request):
     return render(request, 'songs/uploadSong.html', {'form': form})
 
 
-def songs(request):
+def songs(request, alphabet= None):
     randoms = Song.objects.all().order_by('?')
     random_songs = []
     random_songs.append(randoms[0])
@@ -87,9 +87,13 @@ def songs(request):
             for song in randoms:
                 if song.genre == genre and song != history.song:
                     user_recommendation.append(song)
-    songs = Song.objects.all()
-    print(len(user_recommendation))
-    print(len(usersongshistory))
+    tempSongs = Song.objects.all()
+    songs= []
+    for tempSong in tempSongs:
+        if tempSong.tittle[0].lower() == alphabet:
+            songs.append(tempSong)  
+    if not alphabet:
+        songs = Song.objects.all()
     return render(request, "songs/songs.html", {'songs': songs, 'playlists': playlists, 'random_songs': random_songs, 'recommendations': user_recommendation, 'usersongshistory': songshistory})
 
 
@@ -164,7 +168,6 @@ def playSong(request, type1, songName):
     if type1 == 'song':
         songs = Song.objects.all()
         song = Song.objects.get(tittle=songName)
-        print(song.genre)
     elif type1 == 'playlist':
         playlist = Playlist.objects.get(name=songName)
         count = playlist.tracks.all().count()
@@ -195,20 +198,15 @@ def playSong(request, type1, songName):
         for history in usersongshistory:
             songshistory.append(history.song)
             genre = history.song.genre
-            print(genre)
             for song1 in randoms:
                 if song1.genre == genre and song1 != history.song:
                     user_recommendation.append(song1)
         user_recommendation = []
         last_played_song = usersongshistory[len(usersongshistory)-1].song
-        print(last_played_song.tittle)
-        print(song.tittle)
+        
         for song2 in randoms:
             if song2.genre == song.genre and song2.tittle != song.tittle:
                 user_recommendation.append(song2)
-
-    print(len(user_recommendation))
-    print(len(usersongshistory))
     return render(request, "songs/playSong.html", {'currentSong': song, 'songs': songs, 'name': songName, 'type1': type1, 'recommendations': user_recommendation, 'usersongshistory': songshistory[::-1]})
 
     def page_not_found(request):
